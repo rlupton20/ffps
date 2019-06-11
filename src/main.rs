@@ -17,7 +17,13 @@ fn gl(context: &glutin::Context<glutin::PossiblyCurrent>) -> Gl {
     }
 }
 
-fn main() -> Result<(),  ()> {
+struct State {
+    x: usize,
+    y: usize,
+}
+
+fn main() -> Result<(), ()> {
+    let mut state = State { x: 100, y: 100 };
     let mut el = glutin::EventsLoop::new();
 
     let wb = glutin::WindowBuilder::new()
@@ -39,15 +45,22 @@ fn main() -> Result<(),  ()> {
     el.run_forever(|e: glutin::Event| {
         println!("got event {:?}", e);
         match e {
-            glutin::Event::WindowEvent{ ref event, ..} if is_close_request(event) =>
-                glutin::ControlFlow::Break,
-            _ => glutin::ControlFlow::Continue
+            glutin::Event::WindowEvent { ref event, .. } if is_close_request(event) => {
+                glutin::ControlFlow::Break
+            }
+            ev => handle_event(&ev, &mut state),
         }
     });
+
+    windowed_context.swap_buffers().unwrap();
 
     Ok(())
 }
 
-fn is_close_request(e: &glutin::WindowEvent)-> bool {
+fn is_close_request(e: &glutin::WindowEvent) -> bool {
     *e == glutin::WindowEvent::CloseRequested
+}
+
+fn handle_event(e: &glutin::Event, state: &mut State) -> glutin::ControlFlow {
+    glutin::ControlFlow::Continue
 }
