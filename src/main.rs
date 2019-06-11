@@ -1,7 +1,7 @@
 extern crate glutin;
 
 
-fn main() {
+fn main() -> Result<(),  ()> {
     let mut el = glutin::EventsLoop::new();
 
     let wb = glutin::WindowBuilder::new()
@@ -22,4 +22,6 @@ fn main() {
         println!("got event {:?}", e);
         glutin::ControlFlow::Continue
     });
+
+    Ok(())
 }
