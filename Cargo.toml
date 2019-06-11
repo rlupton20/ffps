@@ -6,3 +6,6 @@ edition = "2018"
 
 [dependencies]
 glutin = "0.21"
+
+[build-dependencies]
+gl_generator = "0.11"

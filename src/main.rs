@@ -1,5 +1,21 @@
 extern crate glutin;
 
+pub mod gl {
+    pub use self::Gles2 as Gl;
+    include!(concat!(env!("OUT_DIR"), "/gl_bindings.rs"));
+}
+
+pub struct Gl {
+    pub gl: gl::Gl,
+}
+
+fn gl(context: &glutin::Context<glutin::PossiblyCurrent>) -> Gl {
+    Gl {
+        gl: gl::Gl::load_with(
+            |ptr| context.get_proc_address(ptr) as *const _
+        ),
+    }
+}
 
 fn main() -> Result<(),  ()> {
     let mut el = glutin::EventsLoop::new();
@@ -17,6 +33,8 @@ fn main() -> Result<(),  ()> {
 
         ctxt
     };
+
+    let gl = gl(&windowed_context.context());
 
     el.run_forever(|e: glutin::Event| {
         println!("got event {:?}", e);
