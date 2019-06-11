@@ -212,6 +212,7 @@ fn main() -> Result<(), ()> {
                 e => panic!("{:?}", e),
             },
             glutin::Event::DeviceEvent { ref event, .. } => match event {
+                glutin::DeviceEvent::Key { .. } |
                 glutin::DeviceEvent::Motion { .. } |
                 glutin::DeviceEvent::Added { ..  } |
                 glutin::DeviceEvent::Removed { .. } |
