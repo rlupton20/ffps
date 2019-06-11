@@ -45,7 +45,7 @@ void main() {
 }
 \0";
 
-static VERTEX_DATA: [f32; 15] = [
+static mut VERTEX_DATA: [f32; 15] = [
     -0.5, -0.5,  1.0,  0.0,  0.0,
      0.0,  0.5,  0.0,  1.0,  0.0,
      0.5, -0.5,  0.0,  0.0,  1.0,
@@ -134,10 +134,11 @@ fn gl(context: &glutin::Context<glutin::PossiblyCurrent>) -> Gl {
 struct State {
     x: usize,
     y: usize,
+    sign: f32
 }
 
 fn main() -> Result<(), ()> {
-    let mut state = State { x: 100, y: 100 };
+    let mut state = State { x: 100, y: 100, sign: 1.0};
     let mut el = glutin::EventsLoop::new();
 
     let wb = glutin::WindowBuilder::new()
@@ -154,10 +155,10 @@ fn main() -> Result<(), ()> {
         ctxt
     };
 
-    let gl = gl(&windowed_context.context());
 
     el.run_forever(move |e: glutin::Event| {
         println!("got event {:?}", e);
+        let gl = gl(&windowed_context.context());
 
         match e {
             glutin::Event::WindowEvent { ref event, .. } => match event {
@@ -207,6 +208,15 @@ fn main() -> Result<(), ()> {
                 glutin::WindowEvent::MouseWheel { .. } |
                 glutin::WindowEvent::CursorEntered { .. } |
                 glutin::WindowEvent::CursorLeft { .. } => {
+                    unsafe {VERTEX_DATA[0] += state.sign * 0.01};
+                    unsafe {VERTEX_DATA[5] -= state.sign * 0.01};
+                    unsafe {VERTEX_DATA[10] += state.sign * 0.01};
+                    state.x += 1;
+                    if state.x % 50 == 0 {
+                        state.sign = (-1.0) * state.sign;
+                    }
+                    gl.draw_frame([1.0, 0.5, 0.7, 1.0]);
+                    windowed_context.swap_buffers().expect("Swapbuf fail");
                     glutin::ControlFlow::Continue
                 },
                 e => panic!("{:?}", e),
