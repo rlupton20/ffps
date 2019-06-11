@@ -1,0 +1,8 @@
+[package]
+name = "ffps"
+version = "0.1.0"
+authors = ["Richard Lupton <richard.lupton@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+glutin = "0.21"
