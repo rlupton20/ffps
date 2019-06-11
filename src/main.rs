@@ -20,8 +20,16 @@ fn main() -> Result<(),  ()> {
 
     el.run_forever(|e: glutin::Event| {
         println!("got event {:?}", e);
-        glutin::ControlFlow::Continue
+        match e {
+            glutin::Event::WindowEvent{ ref event, ..} if is_close_request(event) =>
+                glutin::ControlFlow::Break,
+            _ => glutin::ControlFlow::Continue
+        }
     });
 
     Ok(())
+}
+
+fn is_close_request(e: &glutin::WindowEvent)-> bool {
+    *e == glutin::WindowEvent::CloseRequested
 }
