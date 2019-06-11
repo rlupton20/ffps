@@ -1,4 +1,0 @@
-image: ekidd/rust-musl-builder:nightly
-shell: bash
-init:
-  - sudo apt update
