@@ -200,7 +200,9 @@ fn main() -> Result<(), ()> {
                 },
                 glutin::WindowEvent::HiDpiFactorChanged(_) |
                 glutin::WindowEvent::Focused(_) |
+                glutin::WindowEvent::Moved(_) |
                 glutin::WindowEvent::TouchpadPressure { .. } |
+                glutin::WindowEvent::AxisMotion { .. } |
                 glutin::WindowEvent::ReceivedCharacter(_) |
                 glutin::WindowEvent::MouseWheel { .. } |
                 glutin::WindowEvent::CursorEntered { .. } |
